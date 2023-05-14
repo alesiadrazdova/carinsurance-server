@@ -1,0 +1,3 @@
+[submodule "carinsurance-webui"]
+	path = carinsurance-webui
+	url = https://github.com/alesiadrazdova/carinsurance-webui.git
