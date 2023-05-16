@@ -1,12 +1,12 @@
-package com.bootcamp.carinsurance.controllers;
+//54 54package com.bootcamp.carinsurance.controllers;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.stereotype.Controller;
+//import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
-public class HomeController {
-    @GetMapping("/")
-    public String home() {
-        return "Hello, World!";
-    }
-}
+//@Controller
+//public class HomeController {
+//    @GetMapping("/")
+//    public String home() {
+//        return "Hello, World!";
+//    }
+//}
