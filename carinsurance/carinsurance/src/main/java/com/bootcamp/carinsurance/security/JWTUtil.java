@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -27,6 +27,14 @@ public class JWTUtil {
 
     @Value("${jwt_expired}")
     private long timeOfExpirationInMinutes;
+    private JWTVerifier verifier;
+    @PostConstruct
+    private void initVerifier() {
+        verifier = JWT.require(Algorithm.HMAC256(secretWord)).
+                withSubject("User details").
+                withIssuer("authService").
+                build();
+    }
 
     public JWTUtil(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -43,10 +51,6 @@ public class JWTUtil {
     }
     public String validateTokenAndRetrieveClaim(String token) throws JWTVerificationException {
         try {
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secretWord)).
-                    withSubject("User details").
-                    withIssuer("authService").
-                    build();
             DecodedJWT jwt = verifier.verify(token);
             return jwt.getClaim("login").asString();
         }catch (TokenExpiredException | IllegalArgumentException e){

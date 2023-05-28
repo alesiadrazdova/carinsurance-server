@@ -44,7 +44,6 @@ public class Role {
         this.roleId = roleId;
     }
 
-
     public String getName() {
         return name;
     }
