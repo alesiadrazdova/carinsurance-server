@@ -1,15 +1,14 @@
 package com.bootcamp.carinsurance.controllers;
 
-import com.bootcamp.carinsurance.services.PersonService;
+import com.bootcamp.carinsurance.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-public class PersonController {
-    private final PersonService personService;
-
-    public PersonController(PersonService personService) {
-        this.personService = personService;
+public class UserController {
+    private final UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/client")
@@ -24,7 +23,6 @@ public class PersonController {
     public String showHelloEstimator(){
         return "Hello Estimator";
     }
-
     @GetMapping("/hello")
     public String showHello(){
         return "Hello";

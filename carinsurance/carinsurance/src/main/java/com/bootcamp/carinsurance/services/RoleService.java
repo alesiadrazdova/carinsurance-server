@@ -21,7 +21,7 @@ public class RoleService {
     }
 
     public Role searchByName(String name){
-        Optional<Role> foundRole = roleRepository.findByNameOfRole(name);
+        Optional<Role> foundRole = roleRepository.findByName(name);
         return foundRole.orElse(null);
     }
     @Transactional

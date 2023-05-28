@@ -1,10 +1,11 @@
 package com.bootcamp.carinsurance.dto;
 
-import com.sun.istack.NotNull;
+public class UserDTO {
 
-public class PersonDTO {
     private int roleId;
-
+    private String password;
+    private String firstName;
+    private String lastName;
     private String login;
 
     public int getRoleId() {
@@ -46,15 +47,4 @@ public class PersonDTO {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-
-    private String password;
-
-
-
-    private String firstName;
-
-
-    @NotNull
-    private String lastName;
 }

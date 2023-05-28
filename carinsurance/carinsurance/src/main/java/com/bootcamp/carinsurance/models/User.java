@@ -7,13 +7,13 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "person")
-public class Person {
-    public Person(){}
+public class User {
+    public User(){}
 
     @Id
-    @Column(name = "person_id")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int personId;
+    private int userId;
 
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
@@ -23,12 +23,24 @@ public class Person {
     @NotNull
     private String login;
 
+    @Column(name = "password")
+    @NotNull
+    private String password;
+
+    @Column(name = "first_name")
+    @NotNull
+    private String firstName;
+
+    @Column(name = "last_name")
+    @NotNull
+    private String lastName;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        return Objects.equals(role, person.role) && Objects.equals(login, person.login) && Objects.equals(password, person.password) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName);
+        User user = (User) o;
+        return Objects.equals(role, user.role) && Objects.equals(login, user.login) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName);
     }
 
     @Override
@@ -36,7 +48,7 @@ public class Person {
         return Objects.hash(role, login, password, firstName, lastName);
     }
 
-    public Person(Role role, String login, String password, String firstName, String lastName) {
+    public User(Role role, String login, String password, String firstName, String lastName) {
         this.role = role;
         this.login = login;
         this.password = password;
@@ -44,12 +56,12 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public int getPersonId() {
-        return personId;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setPersonId(int personId) {
-        this.personId = personId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public Role getRole() {
@@ -91,16 +103,4 @@ public class Person {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-    @Column(name = "password")
-    @NotNull
-    private String password;
-
-    @Column(name = "first_name")
-    @NotNull
-    private String firstName;
-
-    @Column(name = "last_name")
-    @NotNull
-    private String lastName;
 }

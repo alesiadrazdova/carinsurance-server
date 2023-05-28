@@ -3,15 +3,24 @@ package com.bootcamp.carinsurance.models;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
+
 @Entity
 @Table(name = "role")
 public class Role {
+
+    @Id
+    @Column(name = "role_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int roleId;
+
+    @Column(name = "name_of_role",unique = true)
+    @NotNull
+    private String name;
     public Role(){}
 
-    public Role(String nameOfRole) {
-        this.nameOfRole = nameOfRole;
+    public Role(String name) {
+        this.name = name;
     }
 
     @Override
@@ -19,12 +28,12 @@ public class Role {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return Objects.equals(people, role.people) && Objects.equals(nameOfRole, role.nameOfRole);
+        return roleId == role.roleId && name.equals(role.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nameOfRole);
+        return Objects.hash(name);
     }
 
     public int getRoleId() {
@@ -35,31 +44,12 @@ public class Role {
         this.roleId = roleId;
     }
 
-    public List<Person> getPeople() {
-        return people;
+
+    public String getName() {
+        return name;
     }
 
-    public void setPeople(List<Person> people) {
-        this.people = people;
+    public void setName(String nameOfRole) {
+        this.name = nameOfRole;
     }
-
-    public String getNameOfRole() {
-        return nameOfRole;
-    }
-
-    public void setNameOfRole(String nameOfRole) {
-        this.nameOfRole = nameOfRole;
-    }
-
-    @Id
-    @Column(name = "role_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int roleId;
-
-    @OneToMany
-    private List<Person> people;
-
-    @Column(name = "name_of_role",unique = true)
-    @NotNull
-    private String nameOfRole;
 }
