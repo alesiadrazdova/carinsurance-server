@@ -39,12 +39,12 @@ public class RegistrationService {
 
             if(authenticationDTO.getLogin().equals(user.getLogin()) && passwordEncoder.matches(authenticationDTO.getPassword(),user.getPassword())){
                 String token = jwtUtil.generateToken(authenticationDTO.getLogin());
-                return new ResponseWithMessage(Map.of("jwt-token",token));
+                return new ResponseWithMessage(token);
             }else {
-                return new ResponseWithMessage(Map.of("message","Incorrect credentials"));
+                return new ResponseWithMessage("Incorrect credentials");
             }
         }catch (AuthException e){
-            return new ResponseWithMessage(Map.of("message","Incorrect credentials"));
+            return new ResponseWithMessage("Incorrect credentials");
         }
     }
 }

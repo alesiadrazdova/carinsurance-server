@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.security.auth.message.AuthException;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://127.0.0.1:3000")
 public class AuthController {
     private final JWTUtil jwtUtil;
     private final RegistrationService registrationService;
@@ -43,7 +43,7 @@ public class AuthController {
         user.setRole(role);
         registrationService.register(user, role);
         String token = jwtUtil.generateToken(user.getLogin());
-        return new ResponseWithMessage(Map.of("jwt-token", token));
+        return new ResponseWithMessage(token);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
