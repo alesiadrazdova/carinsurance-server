@@ -2,14 +2,15 @@ package com.bootcamp.carinsurance.services;
 
 import com.bootcamp.carinsurance.dto.AuthenticationDTO;
 import com.bootcamp.carinsurance.models.User;
-import com.bootcamp.carinsurance.pojo.ResponseWithMessage;
 import com.bootcamp.carinsurance.repository.UserRepository;
 import com.bootcamp.carinsurance.security.JWTUtil;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.security.auth.message.AuthException;
-import java.util.Map;
+import java.util.Collections;
 
 @Component
 public class AuthorizationService {
@@ -23,18 +24,18 @@ public class AuthorizationService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public ResponseWithMessage performLogin(AuthenticationDTO authenticationDTO) throws AuthException {
+    public ResponseEntity<?> performLogin(AuthenticationDTO authenticationDTO) {
         try {
             User user = userRepository.findByLogin(authenticationDTO.getLogin()).orElseThrow(() -> new AuthException("Пользователь не найден"));
 
-            if(authenticationDTO.getLogin().equals(user.getLogin()) && passwordEncoder.matches(authenticationDTO.getPassword(),user.getPassword())){
+            if (authenticationDTO.getLogin().equals(user.getLogin()) && passwordEncoder.matches(authenticationDTO.getPassword(),user.getPassword())){
                 String token = jwtUtil.generateToken(authenticationDTO.getLogin());
-                return new ResponseWithMessage(token);
-            }else {
-                return new ResponseWithMessage("Incorrect credentials");
+                return ResponseEntity.ok(Collections.singletonMap("token", token));
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("message", "Incorrect credentials"));
             }
-        }catch (AuthException e){
-            return new ResponseWithMessage("Incorrect credentials");
+        } catch (AuthException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("message", "Incorrect credentials"));
         }
     }
 }

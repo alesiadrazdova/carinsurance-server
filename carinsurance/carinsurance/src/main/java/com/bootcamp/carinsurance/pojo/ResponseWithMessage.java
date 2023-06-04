@@ -1,7 +1,5 @@
 package com.bootcamp.carinsurance.pojo;
 
-import java.util.Map;
-
 public class ResponseWithMessage {
     private String message;
 
