@@ -5,9 +5,10 @@ import com.bootcamp.carinsurance.dto.UserDTO;
 import com.bootcamp.carinsurance.services.AuthorizationService;
 import com.bootcamp.carinsurance.services.RegistrationService;
 
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 public class AuthController {
     private final RegistrationService registrationService;
     private final AuthorizationService authorizationService;
+    private AuthenticationManager authenticationManager;
 
     public AuthController(RegistrationService registrationService, AuthorizationService authorizationService) {
         this.registrationService = registrationService;
@@ -27,7 +29,7 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> performLogin(@RequestBody AuthenticationDTO authenticationDTO) {
+    public ResponseEntity<?> performLogin(@RequestBody AuthenticationDTO authenticationDTO) throws BadCredentialsException {
         return authorizationService.performLogin(authenticationDTO);
     }
 }

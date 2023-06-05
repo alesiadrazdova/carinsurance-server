@@ -6,11 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.bootcamp.carinsurance.services.UserDetailsService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -21,7 +17,6 @@ import java.util.Date;
 
 @Component
 public class JWTUtil {
-    private final UserDetailsService userDetailsService;
     @Value("${jwt_secret}")
     private String secretWord;
 
@@ -34,10 +29,6 @@ public class JWTUtil {
                 withSubject("User details").
                 withIssuer("authService").
                 build();
-    }
-
-    public JWTUtil(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
     }
 
     public String generateToken(String login){
@@ -64,10 +55,5 @@ public class JWTUtil {
             return bearerToken.substring(7);
         }
         return null;
-    }
-
-    public Authentication getAuthentication(String token){
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(validateTokenAndRetrieveClaimLogin(token));
-        return new UsernamePasswordAuthenticationToken(userDetails,"",userDetails.getAuthorities());
     }
 }

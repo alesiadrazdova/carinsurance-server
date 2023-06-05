@@ -1,11 +1,16 @@
 package com.bootcamp.carinsurance.config;
 
 import com.bootcamp.carinsurance.filters.JWTFilter;
+import com.bootcamp.carinsurance.repository.UserRepository;
+import com.bootcamp.carinsurance.security.JWTUtil;
 import com.bootcamp.carinsurance.services.UserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,12 +22,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
     private final JWTFilter jwtFilter;
+    private final JWTUtil jwtUtil;
     @Autowired
-    public SecurityConfig(UserDetailsService userDetailsService, JWTFilter jwtFilter) {
+    public SecurityConfig(UserDetailsService userDetailsService, UserRepository userRepository, JWTFilter jwtFilter, JWTUtil jwtUtil, UserRepository userRepository1, JWTUtil jwtUtil1) {
         this.userDetailsService = userDetailsService;
         this.jwtFilter = jwtFilter;
+        this.userRepository = userRepository1;
+        this.jwtUtil = jwtUtil1;
     }
 
     @Bean
@@ -33,18 +42,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .antMatchers("/client").hasRole("Client")
                 .antMatchers("/insurance_agency").hasRole("Insurance agency")
-                .antMatchers("/Estimator").hasRole("Estimator")
+                .antMatchers("/estimator").hasRole("Estimator")
                 .antMatchers("/auth/login", "/auth/registration", "/error", "/api/hello", "/show").permitAll()
                 .anyRequest().hasAnyRole("Client", "Insurance agency", "Estimator")
-                .and()
-                .formLogin().loginPage("/auth/login")
-                .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/hello", true)
-                .failureUrl("/auth/login?error")
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/auth/login")
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -53,7 +53,17 @@ public class SecurityConfig {
     }
 
     @Bean
+    public AuthenticationManager authenticationManager()
+            throws Exception {
+        var authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(getPasswordEncoder());
+        return new ProviderManager(authenticationProvider);
+    }
+
+    @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
+
