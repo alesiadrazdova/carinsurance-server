@@ -23,15 +23,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
     private UserDetailsService userDetailsService;
-    private final UserRepository userRepository;
     private final JWTFilter jwtFilter;
-    private final JWTUtil jwtUtil;
+
     @Autowired
-    public SecurityConfig(UserDetailsService userDetailsService, UserRepository userRepository, JWTFilter jwtFilter, JWTUtil jwtUtil, UserRepository userRepository1, JWTUtil jwtUtil1) {
+    public SecurityConfig(UserDetailsService userDetailsService,JWTFilter jwtFilter) {
         this.userDetailsService = userDetailsService;
         this.jwtFilter = jwtFilter;
-        this.userRepository = userRepository1;
-        this.jwtUtil = jwtUtil1;
     }
 
     @Bean
@@ -63,7 +60,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new JWTTokenEncoderProxy();
     }
 }
 
