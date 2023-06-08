@@ -1,30 +1,31 @@
 package com.bootcamp.carinsurance.controllers;
 
-import com.bootcamp.carinsurance.models.User;
-import com.bootcamp.carinsurance.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bootcamp.carinsurance.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 public class UserController {
-    @Autowired
-     private UserRepository userRepository;
-    @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private final UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
-    @GetMapping
-    public List<User> getUsers() {
-        return userRepository.findAll();
+
+    @GetMapping("/client")
+    public String showHelloClient(){
+        return "Hello Client";
     }
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable("id") Long id) {
-        return userRepository.findById(id).orElse(null);
+    @GetMapping("/insurance_agency")
+    public String showHelloInsuranceAgency(){
+        return "Hello Insurance agency";
     }
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+    @GetMapping("/estimator")
+    public String showHelloEstimator(){
+        return "Hello Estimator";
+    }
+    @GetMapping("/hello")
+    public String showHello(){
+        return "Hello";
     }
 }
