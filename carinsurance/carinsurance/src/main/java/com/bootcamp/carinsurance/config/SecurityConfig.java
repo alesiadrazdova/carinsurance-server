@@ -1,8 +1,6 @@
 package com.bootcamp.carinsurance.config;
 
 import com.bootcamp.carinsurance.filters.JWTFilter;
-import com.bootcamp.carinsurance.repository.UserRepository;
-import com.bootcamp.carinsurance.security.JWTUtil;
 import com.bootcamp.carinsurance.services.UserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +55,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
-        return new JWTTokenEncoderProxy();
+        return new JWTTokenEncoderProxy(new BCryptPasswordEncoder());
     }
 }
 

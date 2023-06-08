@@ -1,12 +1,10 @@
 package com.bootcamp.carinsurance.filters;
 
 import com.bootcamp.carinsurance.security.JWTUtil;
-import com.bootcamp.carinsurance.services.UserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -20,12 +18,10 @@ import java.io.IOException;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
     private final AuthenticationManager authenticationManager;
 
-    public JWTFilter(JWTUtil jwtUtil, UserDetailsService userDetailsService, AuthenticationManager authenticationManager) {
+    public JWTFilter(JWTUtil jwtUtil, AuthenticationManager authenticationManager) {
         this.jwtUtil = jwtUtil;
-        this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
     }
 
@@ -35,9 +31,9 @@ public class JWTFilter extends OncePerRequestFilter {
         String token = jwtUtil.resolveToken(request);
         if (token != null && jwtUtil.validateTokenAndRetrieveClaimLogin(token) != null) {
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(jwtUtil.validateTokenAndRetrieveClaimLogin(token));
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                Authentication authentication = authenticationManager.authenticate(authenticationToken);
+                String username = jwtUtil.validateTokenAndRetrieveClaimLogin(token);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(username, null);
+                authentication = authenticationManager.authenticate(authentication);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
