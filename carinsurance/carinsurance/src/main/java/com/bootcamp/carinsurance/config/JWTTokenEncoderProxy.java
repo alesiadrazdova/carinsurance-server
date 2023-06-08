@@ -6,8 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class JWTTokenEncoderProxy implements PasswordEncoder {
     private final PasswordEncoder passwordEncoder;
 
-    public JWTTokenEncoderProxy() {
-        this.passwordEncoder = new BCryptPasswordEncoder();
+    public JWTTokenEncoderProxy(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
