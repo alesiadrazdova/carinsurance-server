@@ -17,6 +17,9 @@ public class JWTTokenEncoderProxy implements PasswordEncoder {
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
+        if (rawPassword == null) {
+            throw new IllegalArgumentException("rawPassword cannot be null");
+        }
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 }
