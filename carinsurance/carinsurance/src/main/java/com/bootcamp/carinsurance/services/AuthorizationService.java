@@ -1,5 +1,6 @@
 package com.bootcamp.carinsurance.services;
 
+import com.bootcamp.carinsurance.dto.AuthResponseDTO;
 import com.bootcamp.carinsurance.dto.AuthenticationDTO;
 import com.bootcamp.carinsurance.repository.UserRepository;
 import com.bootcamp.carinsurance.security.JWTUtil;
@@ -33,7 +34,7 @@ public class AuthorizationService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public ResponseEntity<?> performLogin(AuthenticationDTO authenticationDTO) throws BadCredentialsException {
+    public ResponseEntity<AuthResponseDTO> performLogin(AuthenticationDTO authenticationDTO) throws BadCredentialsException {
         try {
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(authenticationDTO.getLogin(),authenticationDTO.getPassword());
             Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
@@ -47,15 +48,14 @@ public class AuthorizationService {
                     .maxAge(24*60*60)
                     .build();
 
-            Map<String, String> responseBody = new HashMap<>();
-            responseBody.put("message", "Login successful");
-            responseBody.put("role", authorityForResponse);
+            AuthResponseDTO authResponseDTO = new AuthResponseDTO("Login successful", authorityForResponse);
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
-                    .body(responseBody);
+                    .body(authResponseDTO);
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("message", "Incorrect credentials"));
+            AuthResponseDTO authResponseDTO = new AuthResponseDTO("Incorrect credentials", null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authResponseDTO);
         }
     }
 }
