@@ -1,5 +1,6 @@
 package com.bootcamp.carinsurance.config;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class JWTTokenEncoderProxy implements PasswordEncoder {
