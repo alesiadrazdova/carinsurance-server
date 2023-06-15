@@ -3,6 +3,7 @@ package com.bootcamp.carinsurance.services;
 import com.bootcamp.carinsurance.dto.AuthResponseDTO;
 import com.bootcamp.carinsurance.dto.AuthenticationDTO;
 import com.bootcamp.carinsurance.security.JWTUtil;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,6 +19,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,10 +47,11 @@ class AuthorizationServiceTest {
         AuthenticationDTO authenticationDTO = new AuthenticationDTO("username", "password");
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_Client"));
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authenticationDTO.getLogin(), authenticationDTO.getPassword());
+        Collection grantedAuthorities = Lists.newArrayList(new SimpleGrantedAuthority("ROLE_Client"));
         Authentication authentication = mock(Authentication.class);
 
         when(authenticationManager.authenticate(authenticationToken)).thenReturn(authentication);
-        doReturn(authorities).when(authentication).getAuthorities();
+        when(authentication.getAuthorities()).thenReturn(grantedAuthorities);
         when(jwtUtil.generateToken(authenticationDTO.getLogin())).thenReturn("token");
 
         ResponseEntity<AuthResponseDTO> response = authorizationService.performLogin(authenticationDTO);
