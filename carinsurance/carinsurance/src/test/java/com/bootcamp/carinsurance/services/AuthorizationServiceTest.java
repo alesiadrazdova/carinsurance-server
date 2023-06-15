@@ -5,6 +5,7 @@ import com.bootcamp.carinsurance.dto.AuthenticationDTO;
 import com.bootcamp.carinsurance.security.JWTUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
@@ -29,12 +30,13 @@ class AuthorizationServiceTest {
     @Mock
     private JWTUtil jwtUtil;
 
+
+    @InjectMocks
     private AuthorizationService authorizationService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        authorizationService = new AuthorizationService(authenticationManager, jwtUtil);
     }
 
     @Test
@@ -44,6 +46,7 @@ class AuthorizationServiceTest {
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_Client"));
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authenticationDTO.getLogin(), authenticationDTO.getPassword());
         Authentication authentication = mock(Authentication.class);
+
         when(authenticationManager.authenticate(authenticationToken)).thenReturn(authentication);
         doReturn(authorities).when(authentication).getAuthorities();
         when(jwtUtil.generateToken(authenticationDTO.getLogin())).thenReturn("token");
@@ -85,5 +88,9 @@ class AuthorizationServiceTest {
         assertNull(response.getBody().getRole());
 
         verify(authenticationManager).authenticate(authenticationToken);
+    }
+
+    void tearDown() {
+        verifyNoMoreInteractions(authenticationManager, jwtUtil);
     }
 }
