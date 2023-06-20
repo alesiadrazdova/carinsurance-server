@@ -7,10 +7,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 public class UserController {
-    private final UserService userService;
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("/client")
     public String showHelloClient(){
@@ -24,6 +20,7 @@ public class UserController {
     public String showHelloEstimator(){
         return "Hello Estimator";
     }
+
     @GetMapping("/hello")
     public String showHello(){
         return "Hello";

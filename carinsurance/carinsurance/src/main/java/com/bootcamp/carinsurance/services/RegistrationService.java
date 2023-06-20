@@ -41,10 +41,12 @@ public class RegistrationService {
         user.setPassword(userDTO.getPassword());
         Role role = roleRepository.findById(userDTO.getRoleId()).orElse(null);
         user.setRole(role);
-        if (userRepository.findByLogin(user.getLogin()) != null) {
+        System.out.println("TEST" + userRepository.findByLogin(user.getLogin()) + "TEST");
+        if (!userRepository.findByLogin(user.getLogin()).isEmpty()) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Username already exists"));
         }
         register(user, role);
-        return ResponseEntity.ok(Collections.singletonMap("message","Registration successful"));
+        return ResponseEntity.ok(Collections.singletonMap("message", "Registration successful"));
     }
 }
+

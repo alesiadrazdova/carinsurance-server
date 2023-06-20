@@ -1,5 +1,6 @@
 package com.bootcamp.carinsurance.filters;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bootcamp.carinsurance.security.JWTUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,7 @@ import java.io.IOException;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
+
     private final AuthenticationManager authenticationManager;
 
     public JWTFilter(JWTUtil jwtUtil, AuthenticationManager authenticationManager) {
@@ -25,18 +27,27 @@ public class JWTFilter extends OncePerRequestFilter {
         this.authenticationManager = authenticationManager;
     }
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String token = jwtUtil.resolveToken(request);
-        if (token != null && jwtUtil.validateTokenAndRetrieveClaimLogin(token) != null) {
-            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (token != null) {
+            try {
                 String username = jwtUtil.validateTokenAndRetrieveClaimLogin(token);
-                Authentication authentication = new UsernamePasswordAuthenticationToken(username, null);
-                authentication = authenticationManager.authenticate(authentication);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(username, null);
+                    authentication = authenticationManager.authenticate(authentication);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+                filterChain.doFilter(request, response);
+            } catch (JWTVerificationException e) {
+                filterChain.doFilter(request, response);
+                return;
             }
+        } else {
+            filterChain.doFilter(request, response);
+            return;
         }
-        filterChain.doFilter(request, response);
     }
 }

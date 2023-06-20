@@ -3,12 +3,12 @@ package com.bootcamp.carinsurance.models;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "users")
 public class User {
-    public User(){}
 
     @Id
     @Column(name = "user_id")
@@ -18,6 +18,17 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     private Role role;
+
+    @OneToMany(mappedBy = "client")
+    private List<Assignment> assignments;
+
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
+    }
 
     @Column(name = "login", unique = true)
     @NotNull
@@ -34,6 +45,8 @@ public class User {
     @Column(name = "last_name")
     @NotNull
     private String lastName;
+
+    public User(){}
 
     @Override
     public boolean equals(Object o) {
