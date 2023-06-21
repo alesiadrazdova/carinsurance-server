@@ -23,12 +23,12 @@ public class Assignment {
     private User client;
 
     @OneToOne
-    @JoinColumn(name = "vehicle_information_id")
+    @JoinColumn(name = "vehicle_information_id",referencedColumnName = "vehicle_information_id")
     private VehicleInformation vehicleInformation;
 
     @OneToOne
-    @JoinColumn(name = "vehicle_condition_id")
-    private VehicleInformation vehicleCondition;
+    @JoinColumn(name = "vehicle_condition_id", referencedColumnName = "vehicle_condition_id")
+    private VehicleCondition vehicleCondition;
 
     @OneToMany(mappedBy = "assignment")
     private List<Contacts> contacts;
@@ -81,11 +81,11 @@ public class Assignment {
         this.vehicleInformation = vehicleInformation;
     }
 
-    public VehicleInformation getVehicleCondition() {
+    public VehicleCondition getVehicleCondition() {
         return vehicleCondition;
     }
 
-    public void setVehicleCondition(VehicleInformation vehicleCondition) {
+    public void setVehicleCondition(VehicleCondition vehicleCondition) {
         this.vehicleCondition = vehicleCondition;
     }
 

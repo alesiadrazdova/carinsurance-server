@@ -12,8 +12,7 @@ public class VehicleInformation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int vehicleInformationId;
 
-    @OneToOne
-    @JoinColumn(name = "assignment_id",referencedColumnName = "assignment_id")
+    @OneToOne(mappedBy = "vehicleInformation")
     private Assignment assignment;
 
     @Column(name = "vin")
