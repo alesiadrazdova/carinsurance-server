@@ -34,7 +34,7 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/api/client").hasRole("Client")
+                .antMatchers("/api/client","/client/**").hasRole("Client")
                 .antMatchers("/api/insurance_agency").hasRole("Insurance agency")
                 .antMatchers("/api/estimator").hasRole("Estimator")
                 .antMatchers("/auth/login", "/auth/registration", "/api/hello").permitAll()
