@@ -12,9 +12,9 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int phoneId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id",referencedColumnName = "contact_id")
-    private Contacts contact;
+    private Contact contact;
 
     @Column(name = "number")
     private String number;
@@ -24,6 +24,12 @@ public class Phone {
     private TypeOfPhone typeOfPhone;
 
     public Phone(){}
+
+    public Phone(Contact contact, String number, TypeOfPhone typeOfPhone) {
+        this.contact = contact;
+        this.number = number;
+        this.typeOfPhone = typeOfPhone;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -46,11 +52,11 @@ public class Phone {
         this.phoneId = phoneId;
     }
 
-    public Contacts getContact() {
+    public Contact getContact() {
         return contact;
     }
 
-    public void setContact(Contacts contact) {
+    public void setContact(Contact contact) {
         this.contact = contact;
     }
 

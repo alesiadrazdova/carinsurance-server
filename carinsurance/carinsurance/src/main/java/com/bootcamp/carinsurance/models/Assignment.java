@@ -3,8 +3,7 @@ package com.bootcamp.carinsurance.models;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.List;;
 
 @Entity
 @Table(name = "assignment")
@@ -22,16 +21,16 @@ public class Assignment {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User client;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "vehicle_information_id",referencedColumnName = "vehicle_information_id")
     private VehicleInformation vehicleInformation;
 
-    @OneToOne
-    @JoinColumn(name = "vehicle_condition_id", referencedColumnName = "vehicle_condition_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "vehicle_condition_id",referencedColumnName = "vehicle_condition_id")
     private VehicleCondition vehicleCondition;
 
-    @OneToMany(mappedBy = "assignment")
-    private List<Contacts> contacts;
+    @OneToMany(mappedBy = "assignment",cascade = CascadeType.ALL)
+    private List<Contact> contacts;
 
     @Column(name = "price")
     private BigDecimal price;
@@ -42,24 +41,11 @@ public class Assignment {
     @Column(name = "date_of_incident")
     private Date dateOfIncident;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "supplement_id")
     private Supplement supplement;
 
     public Assignment(){}
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Assignment that = (Assignment) o;
-        return assignmentId == that.assignmentId && Objects.equals(status, that.status) && Objects.equals(client, that.client) && Objects.equals(price, that.price) && Objects.equals(note, that.note) && Objects.equals(dateOfIncident, that.dateOfIncident);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(assignmentId, status, client, price, note, dateOfIncident);
-    }
 
     public void setAssignmentId(Long assignmentId) {
         this.assignmentId = assignmentId;
@@ -85,15 +71,15 @@ public class Assignment {
         return vehicleCondition;
     }
 
-    public void setVehicleCondition(VehicleCondition vehicleCondition) {
-        this.vehicleCondition = vehicleCondition;
+    public void setVehicleCondition(VehicleCondition vehicleConditions) {
+        this.vehicleCondition = vehicleConditions;
     }
 
-    public List<Contacts> getContacts() {
+    public List<Contact> getContacts() {
         return contacts;
     }
 
-    public void setContacts(List<Contacts> contacts) {
+    public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
     }
 

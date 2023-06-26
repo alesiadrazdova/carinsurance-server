@@ -1,7 +1,7 @@
 package com.bootcamp.carinsurance.models;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "vehicle_condition")
@@ -11,30 +11,16 @@ public class VehicleCondition {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int vehicleConditionId;
 
-    @OneToOne(mappedBy = "vehicleCondition")
+    @OneToOne(mappedBy = "vehicleCondition",cascade = CascadeType.ALL)
     private Assignment assignment;
 
-    @Column(name = "impact_direction")
-    @Enumerated(EnumType.STRING)
-    private ImpactDirection impact_direction;
+    @OneToMany(mappedBy = "vehicleCondition",cascade = CascadeType.ALL)
+    private List<ImpactDirection> impact_directions;
 
     @Column(name = "photos")
     private String photos;
 
     public VehicleCondition(){}
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        VehicleCondition that = (VehicleCondition) o;
-        return Objects.equals(assignment, that.assignment) && Objects.equals(impact_direction, that.impact_direction) && Objects.equals(photos, that.photos);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(assignment, impact_direction, photos);
-    }
 
     public int getVehicleConditionId() {
         return vehicleConditionId;
@@ -52,12 +38,12 @@ public class VehicleCondition {
         this.assignment = assignment;
     }
 
-    public ImpactDirection getImpact_direction() {
-        return impact_direction;
+    public List<ImpactDirection> getImpact_directions() {
+        return impact_directions;
     }
 
-    public void setImpact_direction(ImpactDirection impact_direction) {
-        this.impact_direction = impact_direction;
+    public void setImpact_directions(List<ImpactDirection> impact_directions) {
+        this.impact_directions = impact_directions;
     }
 
     public String getPhotos() {

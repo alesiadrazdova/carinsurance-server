@@ -1,5 +1,7 @@
 package com.bootcamp.carinsurance.dto;
 
+import java.util.Date;
+
 public class UserDTO {
 
     private int roleId;
@@ -7,6 +9,26 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String login;
+
+    private String insuranceCompany;
+
+    private Date insuranceExpireDate;
+
+    public String getInsuranceCompany() {
+        return insuranceCompany;
+    }
+
+    public void setInsuranceCompany(String insuranceCompany) {
+        this.insuranceCompany = insuranceCompany;
+    }
+
+    public Date getInsuranceExpireDate() {
+        return insuranceExpireDate;
+    }
+
+    public void setInsuranceExpireDate(Date insuranceExpireDate) {
+        this.insuranceExpireDate = insuranceExpireDate;
+    }
 
     public int getRoleId() {
         return roleId;

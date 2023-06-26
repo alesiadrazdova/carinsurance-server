@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="carinsurance" target="17" />
+      <module name="carinsurance" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

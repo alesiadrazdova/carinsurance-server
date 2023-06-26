@@ -2,6 +2,8 @@ package com.bootcamp.carinsurance.services;
 
 import com.bootcamp.carinsurance.dto.AuthResponseDTO;
 import com.bootcamp.carinsurance.dto.AuthenticationDTO;
+import com.bootcamp.carinsurance.models.User;
+import com.bootcamp.carinsurance.repository.UserRepository;
 import com.bootcamp.carinsurance.security.JWTUtil;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,13 +17,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -32,6 +32,8 @@ class AuthorizationServiceTest {
     @Mock
     private JWTUtil jwtUtil;
 
+    @Mock
+    private UserRepository userRepository;
 
     @InjectMocks
     private AuthorizationService authorizationService;
@@ -43,13 +45,14 @@ class AuthorizationServiceTest {
 
     @Test
     void performLoginValidCredentialsReturnsSuccessfulResponse() {
-
+        User user = new User();
+        user.setFirstName("John");
+        user.setLastName("Smith");
         AuthenticationDTO authenticationDTO = new AuthenticationDTO("username", "password");
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_Client"));
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authenticationDTO.getLogin(), authenticationDTO.getPassword());
-        Collection grantedAuthorities = Lists.newArrayList(new SimpleGrantedAuthority("ROLE_Client"));
         Authentication authentication = mock(Authentication.class);
-
+        Collection grantedAuthorities = Lists.newArrayList(new SimpleGrantedAuthority("ROLE_Client"));
+        when(userRepository.findByLogin("username")).thenReturn(Optional.of(user));
         when(authenticationManager.authenticate(authenticationToken)).thenReturn(authentication);
         when(authentication.getAuthorities()).thenReturn(grantedAuthorities);
         when(jwtUtil.generateToken(authenticationDTO.getLogin())).thenReturn("token");
@@ -60,9 +63,12 @@ class AuthorizationServiceTest {
         assertNotNull(response.getBody());
         assertEquals("Login successful", response.getBody().getMessage());
         assertEquals("[ROLE_Client]", response.getBody().getRole());
+        assertEquals("John", response.getBody().getFirstname());
+        assertEquals("Smith", response.getBody().getLastName());
 
         verify(authenticationManager).authenticate(authenticationToken);
         verify(jwtUtil).generateToken(authenticationDTO.getLogin());
+        verify(userRepository).findByLogin("username");
     }
 
     @Test
@@ -93,7 +99,7 @@ class AuthorizationServiceTest {
         verify(authenticationManager).authenticate(authenticationToken);
     }
 
-    void tearDown() {
-        verifyNoMoreInteractions(authenticationManager, jwtUtil);
+    void tearDown(){
+        verifyNoMoreInteractions(authenticationManager,jwtUtil);
     }
 }
