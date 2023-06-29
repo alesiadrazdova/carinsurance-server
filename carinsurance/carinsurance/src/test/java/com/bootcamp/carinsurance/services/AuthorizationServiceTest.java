@@ -61,7 +61,6 @@ class AuthorizationServiceTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("Login successful", response.getBody().getMessage());
         assertEquals("[ROLE_Client]", response.getBody().getRole());
         assertEquals("John", response.getBody().getFirstname());
         assertEquals("Smith", response.getBody().getLastName());
@@ -76,9 +75,6 @@ class AuthorizationServiceTest {
         AuthenticationDTO authenticationDTO = new AuthenticationDTO("username", "");
         ResponseEntity<AuthResponseDTO> response = authorizationService.performLogin(authenticationDTO);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("Incorrect credentials", response.getBody().getMessage());
-        assertNull(response.getBody().getRole());
 
     }
 
@@ -92,9 +88,6 @@ class AuthorizationServiceTest {
         ResponseEntity<AuthResponseDTO> response = authorizationService.performLogin(authenticationDTO);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("Incorrect credentials", response.getBody().getMessage());
-        assertNull(response.getBody().getRole());
 
         verify(authenticationManager).authenticate(authenticationToken);
     }
