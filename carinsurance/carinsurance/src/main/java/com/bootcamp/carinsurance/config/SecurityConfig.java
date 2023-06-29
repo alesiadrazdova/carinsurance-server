@@ -46,7 +46,6 @@ public class SecurityConfig{
                 .antMatchers("/api/insurance_agency").hasRole("Insurance agency")
                 .antMatchers("/api/Estimator").hasRole("Estimator")
                 .antMatchers("/auth/login", "/auth/registration", "/api/hello").permitAll()
-                .antMatchers(HttpMethod.OPTIONS,"/client/**").permitAll()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
