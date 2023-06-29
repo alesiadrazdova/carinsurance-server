@@ -1,7 +1,6 @@
 package com.bootcamp.carinsurance.dto;
 
 public class AuthResponseDTO {
-    private  String message;
     private  String role;
     private String firstname;
     private String lastName;
@@ -23,20 +22,11 @@ public class AuthResponseDTO {
         this.lastName = lastName;
     }
 
-    public AuthResponseDTO(String message, String role, String firstname, String lastName) {
-        this.message = message;
+    public AuthResponseDTO(String role, String firstname, String lastName) {
         this.role = role;
         this.firstname=firstname;
         this.lastName=lastName;
 
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public String getRole() {

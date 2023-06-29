@@ -47,13 +47,13 @@ public class AuthorizationService {
                     .maxAge(24 * 60 * 60)
                     .build();
             User user = userRepository.findByLogin(authentication.getName()).stream().findAny().orElse(null);
-            AuthResponseDTO authResponseDTO = new AuthResponseDTO("Login successful", authorityForResponse,user.getFirstName(),user.getLastName());
+            AuthResponseDTO authResponseDTO = new AuthResponseDTO(authorityForResponse,user.getFirstName(),user.getLastName());
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
                     .body(authResponseDTO);
         } catch (BadCredentialsException e) {
-            AuthResponseDTO authResponseDTO = new AuthResponseDTO("Incorrect credentials", null,null,null);
+            AuthResponseDTO authResponseDTO = new AuthResponseDTO(null,null,null);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
