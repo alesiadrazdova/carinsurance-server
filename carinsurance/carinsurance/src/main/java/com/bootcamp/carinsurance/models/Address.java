@@ -11,7 +11,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int addressId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "contact_id",referencedColumnName = "contact_id")
     private Contact contact;
 
@@ -33,8 +33,7 @@ public class Address {
 
     public Address(){}
 
-    public Address(Contact contact, String city, String state, String zip, String addressLine, TypeOfAddress typeOfAddress) {
-        this.contact = contact;
+    public Address(String city, String state, String zip, String addressLine, TypeOfAddress typeOfAddress) {
         this.city = city;
         this.state = state;
         this.zip = zip;

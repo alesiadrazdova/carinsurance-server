@@ -41,7 +41,7 @@ public class AuthorizationService {
             String token = jwtUtil.generateToken(authenticationDTO.getLogin());
             String authorityForResponse = authentication.getAuthorities().toString();
             ResponseCookie responseCookie = ResponseCookie.from("token", token)
-                    .httpOnly(true)
+                    .httpOnly(false)
                     .secure(false)
                     .path("/")
                     .maxAge(24 * 60 * 60)
@@ -54,7 +54,8 @@ public class AuthorizationService {
                     .body(authResponseDTO);
         } catch (BadCredentialsException e) {
             AuthResponseDTO authResponseDTO = new AuthResponseDTO("Incorrect credentials", null,null,null);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authResponseDTO);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
 }
+

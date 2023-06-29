@@ -12,7 +12,7 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int phoneId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "contact_id",referencedColumnName = "contact_id")
     private Contact contact;
 
@@ -25,8 +25,7 @@ public class Phone {
 
     public Phone(){}
 
-    public Phone(Contact contact, String number, TypeOfPhone typeOfPhone) {
-        this.contact = contact;
+    public Phone( String number, TypeOfPhone typeOfPhone) {
         this.number = number;
         this.typeOfPhone = typeOfPhone;
     }

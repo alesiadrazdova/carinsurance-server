@@ -42,7 +42,7 @@ public class RegistrationService {
         user.setInsuranceCompany(userDTO.getInsuranceCompany());
         Role role = roleRepository.findById(userDTO.getRoleId()).orElse(null);
         user.setRole(role);
-        if (userRepository.findByLogin(user.getLogin())!=null) {
+        if (userRepository.findByLogin(user.getLogin()).isPresent()) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Username already exists"));
         }
         register(user, role);

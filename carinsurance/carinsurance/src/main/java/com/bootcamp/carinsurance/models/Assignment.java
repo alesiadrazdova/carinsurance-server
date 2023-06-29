@@ -33,7 +33,7 @@ public class Assignment {
     private List<Contact> contacts;
 
     @Column(name = "price")
-    private BigDecimal price;
+    private BigDecimal totalPrice;
 
     @Column(name = "note")
     private String note;
@@ -107,12 +107,12 @@ public class Assignment {
         this.client = client;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setTotalPrice(BigDecimal price) {
+        this.totalPrice = price;
     }
 
     public String getNote() {
