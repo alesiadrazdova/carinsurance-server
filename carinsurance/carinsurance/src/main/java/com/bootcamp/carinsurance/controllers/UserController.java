@@ -1,9 +1,7 @@
 package com.bootcamp.carinsurance.controllers;
 
-import com.bootcamp.carinsurance.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
 @RequestMapping("/api")
 public class UserController {

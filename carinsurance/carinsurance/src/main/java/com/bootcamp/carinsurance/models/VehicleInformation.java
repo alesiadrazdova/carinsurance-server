@@ -12,14 +12,17 @@ public class VehicleInformation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int vehicleInformationId;
 
-    @OneToOne(mappedBy = "vehicleInformation")
+    @OneToOne(mappedBy = "vehicleInformation",cascade = CascadeType.PERSIST)
     private Assignment assignment;
 
     @Column(name = "vin")
-    private int vin;
+    private String vin;
 
     @Column(name = "year")
     private int year;
+
+    @Column(name = "model")
+    private String model;
 
     @Column(name = "make_in")
     private String makeIn;
@@ -51,6 +54,14 @@ public class VehicleInformation {
         return Objects.hash(assignment, vin, year, makeIn, licensePart, licenseState, licenseExpiration, odometerValue);
     }
 
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
     public int getVehicleInformationId() {
         return vehicleInformationId;
     }
@@ -67,11 +78,11 @@ public class VehicleInformation {
         this.assignment = assignment;
     }
 
-    public int getVin() {
+    public String getVin() {
         return vin;
     }
 
-    public void setVin(int vin) {
+    public void setVin(String vin) {
         this.vin = vin;
     }
 

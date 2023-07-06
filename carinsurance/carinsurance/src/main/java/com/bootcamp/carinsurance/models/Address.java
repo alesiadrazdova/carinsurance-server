@@ -11,9 +11,9 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int addressId;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "contact_id",referencedColumnName = "contact_id")
-    private Contacts contact;
+    private Contact contact;
 
     @Column(name = "city")
     private String city;
@@ -24,8 +24,8 @@ public class Address {
     @Column(name = "zip")
     private String zip;
 
-    @Column(name = "note")
-    private String note;
+    @Column(name = "address_line")
+    private String addressLine;
 
     @Column(name = "type_of_address")
     @Enumerated(EnumType.STRING)
@@ -33,17 +33,25 @@ public class Address {
 
     public Address(){}
 
+    public Address(String city, String state, String zip, String addressLine, TypeOfAddress typeOfAddress) {
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.addressLine = addressLine;
+        this.typeOfAddress = typeOfAddress;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return Objects.equals(contact, address.contact) && Objects.equals(city, address.city) && Objects.equals(state, address.state) && Objects.equals(zip, address.zip) && Objects.equals(note, address.note) && typeOfAddress == address.typeOfAddress;
+        return Objects.equals(contact, address.contact) && Objects.equals(city, address.city) && Objects.equals(state, address.state) && Objects.equals(zip, address.zip) && Objects.equals(address, address.addressLine) && typeOfAddress == address.typeOfAddress;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contact, city, state, zip, note, typeOfAddress);
+        return Objects.hash(contact, city, state, zip, addressLine, typeOfAddress);
     }
 
     public int getAddressId() {
@@ -54,11 +62,11 @@ public class Address {
         this.addressId = addressId;
     }
 
-    public Contacts getContact() {
+    public Contact getContact() {
         return contact;
     }
 
-    public void setContact(Contacts contact) {
+    public void setContact(Contact contact) {
         this.contact = contact;
     }
 
@@ -86,12 +94,12 @@ public class Address {
         this.zip = zip;
     }
 
-    public String getNote() {
-        return note;
+    public String getAddressLine() {
+        return addressLine;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setAddressLine(String note) {
+        this.addressLine = note;
     }
 
     public TypeOfAddress getTypeOfAddress() {

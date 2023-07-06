@@ -43,13 +43,12 @@ class RegistrationServiceTest {
 
     @Test
     void testPerformRegistrationSuccessfulRegistration() {
-
         UserDTO userDTO = createUserDTO();
         Role role = createRole();
         User user = createUser(userDTO, role);
 
         when(roleRepository.findById(userDTO.getRoleId())).thenReturn(Optional.of(role));
-        when(userRepository.findByLogin(userDTO.getLogin())).thenReturn(null);
+        when(userRepository.findByLogin(userDTO.getLogin())).thenReturn(Optional.empty());
         when(passwordEncoder.encode(user.getPassword())).thenReturn("hashedPassword");
 
         ResponseEntity<?> response = registrationService.performRegistration(userDTO);

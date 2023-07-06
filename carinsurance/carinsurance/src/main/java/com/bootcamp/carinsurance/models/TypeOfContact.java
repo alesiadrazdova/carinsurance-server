@@ -11,10 +11,14 @@ public class TypeOfContact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int typeOfContactId;
 
-    @Column(name = "name_of_contact")
+    @Column(name = "name_of_type")
     private String name;
 
     public TypeOfContact(){}
+
+    public TypeOfContact(String name) {
+        this.name = name;
+    }
 
     @Override
     public boolean equals(Object o) {
